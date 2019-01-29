@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:api="clr-namespace:GameResOrg.Controls.Api;assembly=GameResOrg.Core"
+             xmlns:validations="clr-namespace:GameResOrg.Core.Validations;assembly=GameResOrg.Core"
+             x:Class="GameResOrg.AddThread">
+
+	<ContentPage.Content>
+		<Grid>
+			<StackLayout Spacing="5" Padding="10">
+				<StackLayout Orientation="Horizontal">
+					<Label Text="New conversation in group: " />
+					<Label Text="{Binding Group.Name}"/>
+				</StackLayout>
+				<Label x:Name="errorText" IsVisible="{Binding Text, Source={x:Reference Name=errorText}, Mode=OneWay, Converter={api:Converter Type=TextToVisible}, ConverterParameter=!}" TextColor="Red"/>
+				<Entry Placeholder="Conversation name" Text="{Binding Name, Mode=OneWayToSource}">
+					<Entry.Behaviors>
+						<validations:EntryRequiredBehaviour />
+					</Entry.Behaviors>
+				</Entry>
+
+				<Label Text="Select included members" />
+				<ListView x:Name="userList" SelectionMode="None" VerticalOptions="FillAndExpand">
+					<ListView.ItemTemplate>
+						<DataTemplate>
+							<ViewCell>
+								<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+									<Image Aspect="AspectFit" MinimumWidthRequest="40" MinimumHeightRequest="40"
+												 Source="{Binding User.PhotoStream, Converter={api:Converter Type=Avatar}, Mode=OneTime}" />
+									<Label Margin="6,0" VerticalOptions="Center" HorizontalOptions="FillAndExpand">
+										<Label.FormattedText>
+											<FormattedString>
+												<Span Text="{Binding User.Personals, Mode=OneTime}" FontSize="Medium"/><Span Text="&#10;"/>
+												<Span Text="{Binding User.Email, Mode=OneTime}" TextColor="Gray"/>
+											</FormattedString>
+										</Label.FormattedText>
+									</Label>
+									<Switch IsToggled="{Binding Included}" HorizontalOptions="End"/>
+								</StackLayout>
+							</ViewCell>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+
+				<Button Text="Save" BackgroundColor="CornflowerBlue" Clicked="OnSave" VerticalOptions="End"/>
+			</StackLayout>
+			<Frame BackgroundColor="#70DCDCDC" IsVisible="{Binding IsBusy, Mode=OneWay}">
+				<ActivityIndicator Color="DodgerBlue" IsVisible="{Binding IsBusy, Mode=OneWay}"
+													 IsRunning="{Binding IsBusy, Mode=OneWay}"
+													 VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			</Frame>
+		</Grid>
+	</ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:api="clr-namespace:GameResOrg.Controls.Api;assembly=GameResOrg.Core"
+             x:Class="GameResOrg.GroupChat"
+						 Title="Group chat">
+
+	<ContentPage.Content>
+		<Grid>
+			<StackLayout Padding="10" Spacing="5">
+				<Label Text="Select group" />
+				<Picker x:Name="groupList" SelectedIndexChanged="OnGroupSelected"
+								SelectedItem="{Binding SelectedGroup, Mode=OneWayToSource}"/>
+				<StackLayout IsVisible="{Binding SelectedItem, Source={x:Reference groupList}, Converter={api:Converter Type=NullToBool}}" Spacing="10" VerticalOptions="FillAndExpand">
+					<Label Text="Conversation" />
+					<StackLayout Orientation="Horizontal" Spacing="5">
+						<Picker x:Name="threadList" SelectedIndexChanged="OnThreadSelected" 
+										ItemsSource="{Binding Threads, Mode=OneWay}" HorizontalOptions="FillAndExpand"
+										SelectedItem="{Binding SelectedThread, Mode=OneWayToSource}"/>
+						<Button BorderColor="CornflowerBlue" Clicked="OnNewThreadClick" HorizontalOptions="End" BorderWidth="2"
+										HeightRequest="40" WidthRequest="50" Image="ic_add_black.png" BackgroundColor="Gainsboro"/>
+					</StackLayout>
+
+					<Grid VerticalOptions="FillAndExpand">
+						<ListView x:Name="messageList" SelectionMode="None" SeparatorVisibility="None" HasUnevenRows="True"
+											IsVisible="{Binding SelectedItem, Source={x:Reference threadList}, Converter={api:Converter Type=NullToBool}}" ItemsSource="{Binding Messages, Mode=OneWay}" BackgroundColor="AliceBlue">
+							<ListView.ItemTemplate>
+								<DataTemplate >
+									<ViewCell>
+										<Grid x:Name="root" Margin="0,0,20,4" HorizontalOptions="Start">
+											<Grid.ColumnDefinitions>
+												<ColumnDefinition Width="36"/>
+												<ColumnDefinition Width="*"/>
+											</Grid.ColumnDefinitions>
+											<Grid.Triggers>
+												<DataTrigger TargetType="Grid" Binding="{Binding Own, Mode=OneTime}" Value="True">
+													<Setter Property="Margin" Value="20,0,0,4"/>
+													<Setter Property="HorizontalOptions" Value="End" />
+												</DataTrigger>
+											</Grid.Triggers>
+
+											<Image Aspect="AspectFit" MinimumWidthRequest="32" MinimumHeightRequest="32"
+														 Source="{Binding Sender.User.PhotoStream, Converter={api:Converter Type=Avatar}, Mode=OneTime}" VerticalOptions="Start" Margin="0,0,4,0"
+														 IsVisible="{Binding HideSender, Mode=OneTime, Converter={api:Converter Type=NegateBool}}"/>
+
+											<StackLayout Grid.Column="1">
+												<Label Text="{Binding SenderPersonals, Mode=OneTime}" Margin="0,4,0,0" FontSize="Medium">
+													<Label.Triggers>
+														<DataTrigger TargetType="Label" Binding="{Binding HideSender, Mode=OneTime}" Value="True">
+															<Setter Property="IsVisible" Value="False"/>
+														</DataTrigger>
+													</Label.Triggers>
+												</Label>
+												<Frame CornerRadius="4" BorderColor="CornflowerBlue" 
+															 BackgroundColor="#70DCDCDC" Padding="4" >
+													<Frame.Triggers>
+														<DataTrigger TargetType="Frame" Binding="{Binding Own, Mode=OneTime}" Value="False">
+															<Setter Property="BackgroundColor" Value="#606495ED"/>
+														</DataTrigger>
+													</Frame.Triggers>
+													<Label Text="{Binding Text, Mode=OneTime}" TextColor="Black"/>
+												</Frame>
+											</StackLayout>
+										</Grid>
+									</ViewCell>
+								</DataTemplate>
+							</ListView.ItemTemplate>
+						</ListView>
+						<Label IsVisible="{Binding Messages, Mode=OneWay, Converter={api:Converter Type=CountToVisible}, ConverterParameter=!}"
+									 Text="No messages" VerticalOptions="Center" HorizontalOptions="Center"/>
+					</Grid>
+					<StackLayout Orientation="Horizontal" Spacing="5" VerticalOptions="End">
+						<Entry Text="{Binding MessageText}" HorizontalOptions="FillAndExpand"/>
+						<Button BorderColor="CornflowerBlue" Clicked="OnMessageSend" HorizontalOptions="End" BorderWidth="2"
+										BackgroundColor="Gainsboro" HeightRequest="40" WidthRequest="50" Image="ic_mail_out_black.png"/>
+					</StackLayout>
+				</StackLayout>
+	    </StackLayout>
+			<Frame BackgroundColor="#70DCDCDC" IsVisible="{Binding IsBusy, Mode=OneWay}">
+				<ActivityIndicator Color="DodgerBlue" IsVisible="{Binding IsBusy, Mode=OneWay}"
+													 IsRunning="{Binding IsBusy, Mode=OneWay}"
+													 VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			</Frame>
+		</Grid>
+  </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" 
+						 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+						 xmlns:api="clr-namespace:GameResOrg.Controls.Api;assembly=GameResOrg.Core"
+						 x:Class="GameResOrg.ProjectSelect">
+
+	<ContentPage.Content>
+		<Grid>
+			<StackLayout Padding="10" Spacing="10">
+				<Label Text="Select project" />
+				<ListView x:Name="projList" SelectionMode="Single" BackgroundColor="AliceBlue"
+									SelectedItem="{Binding SelectedProject, Mode=OneWayToSource}" HasUnevenRows="True">
+					<ListView.ItemTemplate>
+						<DataTemplate >
+							<ViewCell >
+								<StackLayout Margin="0,0,0,10">
+									<Label Text="{Binding Name, Mode=OneTime}" TextColor="Black" FontSize="Medium"/>
+									<Label TextColor="Gray" FontSize="Small">
+										<Label.FormattedText>
+											<FormattedString>
+												<Span Text="Created: "/><Span Text="{Binding CreationDate, Mode=OneTime, StringFormat='{0:dd/MM/yy}'}"/>
+											</FormattedString>
+										</Label.FormattedText>
+									</Label>
+									<Label IsVisible="{Binding Description, Converter={api:Converter Type=TextToVisible}, ConverterParameter=!, Mode=OneWay}">
+										<Label.FormattedText>
+											<FormattedString>
+												<Span Text="Description: "/> <Span Text="{Binding Description, Mode=OneTime}" />
+											</FormattedString>
+										</Label.FormattedText>
+									</Label>
+								</StackLayout>
+							</ViewCell>
+						</DataTemplate>
+					</ListView.ItemTemplate>
+				</ListView>
+				<Button Text="Ok" Clicked="OnSelectClick" BackgroundColor="CornflowerBlue"/>
+			</StackLayout>
+			<Frame BackgroundColor="#70DCDCDC" IsVisible="{Binding IsBusy, Mode=OneWay}">
+				<ActivityIndicator Color="DodgerBlue" IsVisible="{Binding IsBusy, Mode=OneWay}"
+													 IsRunning="{Binding IsBusy, Mode=OneWay}"
+													 VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			</Frame>
+		</Grid>
+	</ContentPage.Content>
+</ContentPage>

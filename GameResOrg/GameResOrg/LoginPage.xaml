@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+						 xmlns:validations="clr-namespace:GameResOrg.Core.Validations;assembly=GameResOrg.Core"
+						 xmlns:api="clr-namespace:GameResOrg.Controls.Api;assembly=GameResOrg.Core"
+						 x:Class="GameResOrg.LoginPage">
+	<ContentPage.Content>
+		<Grid VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
+			<StackLayout Padding="20" Spacing="10" >
+				<Label x:Name="errorText" IsVisible="{Binding Text, Source={x:Reference Name=errorText}, Mode=OneWay, Converter={api:Converter Type=TextToVisible}, ConverterParameter=!}" TextColor="Red"/>
+
+				<Label Text="Specify team's database server" />
+				<Entry Placeholder="Server address" Margin="0,0,0,10" Text="{Binding Server, Mode=OneWayToSource}">
+					<Entry.Behaviors>
+						<validations:EntryRequiredBehaviour />
+					</Entry.Behaviors>
+				</Entry>
+
+				<Label Text="Fill in login credentials"  />
+				<Entry Placeholder="Email" Text="{Binding Email, Mode=OneWayToSource}">
+					<Entry.Behaviors>
+						<validations:EntryRequiredBehaviour />
+					</Entry.Behaviors>
+				</Entry>
+				<Entry IsPassword="True" Placeholder="Password" Text="{Binding Password, Mode=OneWayToSource}">
+					<Entry.Behaviors>
+						<validations:EntryRequiredBehaviour />
+					</Entry.Behaviors>
+				</Entry>
+
+				<Button Text="Sign in" Clicked="OnLoginClick" BackgroundColor="CornflowerBlue"/>
+			</StackLayout>
+			<Frame BackgroundColor="#70DCDCDC" IsVisible="{Binding IsBusy, Mode=OneWay}">
+				<ActivityIndicator Color="DodgerBlue" IsVisible="{Binding IsBusy, Mode=OneWay}"
+													 IsRunning="{Binding IsBusy, Mode=OneWay}"
+													 VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			</Frame>
+		</Grid>
+	</ContentPage.Content>
+</ContentPage>

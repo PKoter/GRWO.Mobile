@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:api="clr-namespace:GameResOrg.Controls.Api;assembly=GameResOrg.Core"
+             x:Class="GameResOrg.MainPage">
+
+	<ContentPage.Content>
+		<StackLayout Padding="20" Spacing="10">
+			<Label Text="You don't have required privileges" TextColor="Brown" 
+						 IsVisible="{Binding IsEnabled, Source={x:Reference manageUsers}, Converter={api:Converter Type=NegateBool}}"/>
+			<StackLayout x:Name="manageUsers" Margin="0,0,0,10">
+				<Label Text="Manage users' privileges" />
+				<Button Text="Go" Clicked="OnManageUsersClick" BackgroundColor="MediumSeaGreen">
+					<Button.Triggers>
+						<DataTrigger TargetType="Button" 
+												 Binding="{Binding IsEnabled, Source={x:Reference manageUsers}, Mode=OneWay}" Value="False">
+							<Setter Property="BackgroundColor" Value="Gray"/>
+						</DataTrigger>
+					</Button.Triggers>
+				</Button>
+			</StackLayout>
+			<Label Text="Group chat" />
+			<StackLayout Orientation="Horizontal">
+				<Label Text="New group messages: " FontSize="Medium"/>
+				<Label x:Name="msgCount" FontSize="Medium"/>
+			</StackLayout>
+			<Button Text="Go" Clicked="OnGroupChatClick" BackgroundColor="CornflowerBlue" />
+		</StackLayout>
+	</ContentPage.Content>
+</ContentPage>

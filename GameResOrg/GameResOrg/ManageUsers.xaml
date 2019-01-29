@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:api="clr-namespace:GameResOrg.Controls.Api;assembly=GameResOrg.Core"
+             x:Class="GameResOrg.ManageUsers">
+
+	<ContentPage.Content>
+		<Grid>
+			<StackLayout>
+				<StackLayout Padding="20">
+					<Label Text="Select user to manage privileges" VerticalOptions="Start"  />
+					<ListView x:Name="userList" SelectionMode="Single" SelectedItem="{Binding SelectedUser, Mode=OneWayToSource}" 
+										ItemSelected="UserSelected">
+						<ListView.ItemTemplate>
+							<DataTemplate>
+								<ViewCell>
+									<StackLayout Orientation="Horizontal">
+										<Image Aspect="AspectFit" MinimumWidthRequest="40" MinimumHeightRequest="40"
+													 Source="{Binding User.PhotoStream, Converter={api:Converter Type=Avatar}, Mode=OneTime}" />
+										<Label Margin="6,0" VerticalOptions="Center">
+											<Label.FormattedText>
+												<FormattedString>
+													<Span Text="{Binding User.Personals, Mode=OneTime}" FontSize="Medium"/><Span Text="&#10;"/>
+													<Span Text="{Binding User.Email, Mode=OneTime}" TextColor="Gray"/>
+												</FormattedString>
+											</Label.FormattedText>
+										</Label>
+									</StackLayout>
+								</ViewCell>
+							</DataTemplate>
+						</ListView.ItemTemplate>
+					</ListView>
+				</StackLayout>
+
+				<Frame IsVisible="{Binding IsSelected, Mode=OneWay}" BackgroundColor="Gainsboro" BorderColor="Gray" Padding="20">
+					<StackLayout >
+						<Label Text="Set privileges" Margin="0,6"/>
+						<StackLayout Orientation="Horizontal">
+							<Switch IsToggled="{Binding Admin}"/>
+							<Label Text="Admin rights"/>
+						</StackLayout>
+						<StackLayout Orientation="Horizontal">
+							<Switch IsToggled="{Binding Toggle3, Mode=TwoWay}" Margin="0,6"
+											IsEnabled="{Binding Admin, Mode=OneWay, Converter={api:Converter Type=NegateBool}}"/>
+							<Label Text="Create user groups"/>
+						</StackLayout>
+						<StackLayout Orientation="Horizontal">
+							<Switch IsToggled="{Binding Toggle2, Mode=TwoWay}" 
+											IsEnabled="{Binding Admin, Mode=OneWay, Converter={api:Converter Type=NegateBool}}"/>
+							<Label Text="Manage definitions and project configuration"/>
+						</StackLayout>
+						<StackLayout Orientation="Horizontal">
+							<Switch IsToggled="{Binding Toggle1, Mode=TwoWay}" Margin="0,6,0,0"
+											IsEnabled="{Binding Admin, Mode=OneWay, Converter={api:Converter Type=NegateBool}}"/>
+							<Label Text="Manage created objects"/>
+						</StackLayout>
+
+						<Button Text="Save" BackgroundColor="CornflowerBlue" Clicked="SavePrivileges"/>
+					</StackLayout>
+				</Frame>
+			</StackLayout>
+			<Frame BackgroundColor="#70DCDCDC" IsVisible="{Binding IsBusy, Mode=OneWay}">
+				<ActivityIndicator Color="DodgerBlue" IsVisible="{Binding IsBusy, Mode=OneWay}"
+													 IsRunning="{Binding IsBusy, Mode=OneWay}"
+													 VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"/>
+			</Frame>
+		</Grid>
+	</ContentPage.Content>
+</ContentPage>
