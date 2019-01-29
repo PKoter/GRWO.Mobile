@@ -1,0 +1,73 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Glue\Mold - Copy.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JetBrains.Annotations" Version="2018.2.1" />
+    <PackageReference Include="JsonRazor" Version="1.2.2.8" />
+    <PackageReference Include="LiteDB" Version="4.1.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="2.1.1" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.4" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />
+    <PackageReference Include="SimpleInjector" Version="4.4.0" />
+    <PackageReference Include="System.Buffers" Version="4.5.0" />
+    <PackageReference Include="Xamarin.Forms" Version="3.1.0.697729" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\GameResOrg.Core\GameResOrg.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="GameResOrg.Data">
+      <HintPath>..\..\..\..\GRWO\GameResOrg.Logic\bin\Debug\netstandard2.0\GameResOrg.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="GameResOrg.Helpers">
+      <HintPath>..\..\..\..\GRWO\GameResOrg.Logic\bin\Debug\netstandard2.0\GameResOrg.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="GameResOrg.Local">
+      <HintPath>..\..\..\..\GRWO\GameResOrg.Logic\bin\Debug\netstandard2.0\GameResOrg.Local.dll</HintPath>
+    </Reference>
+    <Reference Include="GameResOrg.Logic">
+      <HintPath>..\..\..\..\GRWO\GameResOrg.Logic\bin\Debug\netstandard2.0\GameResOrg.Logic.dll</HintPath>
+    </Reference>
+    <Reference Include="GameResOrg.Models">
+      <HintPath>..\..\..\..\GRWO\GameResOrg.Logic\bin\Debug\netstandard2.0\GameResOrg.Models.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="ManageUsers.xaml.cs">
+      <DependentUpon>ManageUsers.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="AddThread.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="GroupChat.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ProjectSelect.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="ManageUsers.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
